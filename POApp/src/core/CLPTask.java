@@ -33,22 +33,47 @@ public class CLPTask {
     //CHECK CONSISTENCY AND PRINT RESULTS BEFORE AND AFTER DIFF2
     //INITIALIZE RECTANGLES INSIDE MODELUJ, FOR DINAMIC SIZE OF BOXES
     private IntVar[][] rectangles;
+    
+
+    protected IntVar[][] vars;
+    protected IntVar[] originXIntVars, originYIntVars, lenXIntVars,lenYIntVars ;
 
     
-//    protected IntVar[] points = new IntVar[4];
-//    protected IntVar[] lengths = new IntVar[2];
-    
     public void modeluj() {
+        /*
         rectangles=new IntVar[][]{{o1, o2, l1, l2},
             {o1, o2, l1, l2},
             {o1, o2, l1, l2},
             {o1, o2, l1, l2},
             {o1, o2, l1, l2}};
-        store.impose(new Diff2(rectangles));
+        */
+        int boxNum = 4;
+        vars = new IntVar[boxNum][4];
+        originXIntVars = new IntVar[boxNum];
+        originYIntVars = new IntVar[boxNum];
+        lenXIntVars = new IntVar[boxNum];
+        lenYIntVars = new IntVar[boxNum];
+        for (int i = 0; i < boxNum; i++) {
+            originXIntVars[i] = (new IntVar(store, "Origin X:" + i, 0, 8));
+            originYIntVars[i] = (new IntVar(store, "Origin Y:" + i, 0, 3));
+            lenXIntVars[i] = (new IntVar(store, "Length X:" + i, 2, 2));
+            lenYIntVars[i] = (new IntVar(store, "Length X:" + i, 2, 2));      
+            
+        }
+        for (int i = 0; i < boxNum; i++) {
+            for (int j = 0; j < 4; j++) {
+                vars[i][j] = originXIntVars[j++];
+                vars[i][j] = originYIntVars[j++];
+                vars[i][j] = lenXIntVars[j++];
+                vars[i][j] = lenYIntVars[j++];
+            }
+        }
+        
+        store.impose(new Diff2(vars));
     }
     
     public void szukaj() {
-        SelectChoicePoint<IntVar> select = new SimpleMatrixSelect(rectangles, new SmallestDomain<IntVar>(), new IndomainMin<IntVar>());
+        SelectChoicePoint<IntVar> select = new SimpleMatrixSelect(vars, new SmallestDomain<IntVar>(), new IndomainMin<IntVar>());
         search.labeling(store, select);
     }
     
