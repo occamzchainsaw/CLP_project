@@ -60,13 +60,15 @@ public class CLPTask {
             lenYIntVars[i] = (new IntVar(store, "Length X:" + i, 2, 2));      
             
         }
-        for (int i = 0; i < boxNum; i++) {
-            for (int j = 0; j < 4; j++) {
-                vars[i][j] = originXIntVars[j++];
-                vars[i][j] = originYIntVars[j++];
-                vars[i][j] = lenXIntVars[j++];
-                vars[i][j] = lenYIntVars[j++];
-            }
+         int col = 0;
+        for (int i = 0; i < boxNum; i++) {           
+            
+                col = 0;
+                vars[i][col++] = originXIntVars[i];
+                vars[i][col++] = originYIntVars[i];
+                vars[i][col++] = lenXIntVars[i];
+                vars[i][col++] = lenYIntVars[i];
+            
         }
         
         store.impose(new Diff2(vars));
