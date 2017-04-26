@@ -15,15 +15,55 @@ public class Box {
     private int sideX;
     private int sideY;
     private int id;
+    private String name;
 
-
-    public Box(){}
-
+    public Box() {
+    }
+    
     public Box(int sideX, int sideY, int id) {
         this.sideX = sideX;
         this.sideY = sideY;
         this.id = id;
     }
+    public Box(int sideX, int sideY, String name) {
+        this.sideX = sideX;
+        this.sideY = sideY;
+        this.name = name;
+    }
+    
+    /**
+     * 
+     * @param boxNum Number of boxes that wanted to create.
+     * @param sideX Length of X dimension.
+     * @param sideY Length of Y dimension.
+     * @return ArrayList of Boxes created typed ArrayList<Box>
+     */    
+    public ArrayList<Box> generateBoxes(int boxNum, int sideX, int sideY){
+    
+        ArrayList<Box> boxes = new ArrayList();
+        for (int i = 0; i < boxNum; i++) {
+            boxes.add(new Box(sideX,sideY,i+1));
+        }
+        return boxes;
+    }
+    
+    /**
+     * 
+     * @param boxNum Number of boxes that wanted to create.
+     * @param sideX Length of X dimension.
+     * @param sideY Length of Y dimension.
+     * @param name Name of boxes to create.
+     * @return ArrayList of Boxes created typed ArrayList<Box>
+     */
+    public ArrayList<Box> generateBoxes(int boxNum, int sideX, int sideY, String name){
+    
+        ArrayList<Box> boxes = new ArrayList();
+        for (int i = 0; i < boxNum; i++) {
+            boxes.add(new Box(sideX,sideY,name + " " + (i+1)));
+        }
+        return boxes;
+    }
+
 
     public void setSideX(int sideX) {
         this.sideX = sideX;
@@ -48,16 +88,15 @@ public class Box {
     public void setId(int id) {
         this.id = id;
     }
-    
-    public ArrayList<Box> generateBoxes(int boxNum){
-    
-        ArrayList<Box> boxes = new ArrayList();
-        for (int i = 0; i < boxNum; i++) {
-            boxes.add(new Box(2,2,i+1));
-        }
-        return boxes;
+
+    public String getName() {
+        return name;
     }
 
+    public void setName(String name) {
+        this.name = name;
+    }
+    
     @Override
     public String toString() {
         return "ID= " + this.id + " X =" + this.sideX + " Y =" + this.sideY ;
