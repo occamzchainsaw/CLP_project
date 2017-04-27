@@ -4,11 +4,13 @@
  * and open the template in the editor.
  */
 package core;
+
 /**
  *
  * @author achte
  */
 public class Box {
+
     private int sideX;
     private int sideY;
     private int id;
@@ -16,12 +18,13 @@ public class Box {
 
     public Box() {
     }
-    
+
     public Box(int sideX, int sideY) {
         this.sideX = sideX;
         this.sideY = sideY;
-        this.id = BoxController.LAST_ID++;      
+        this.id = BoxController.LAST_ID++;
     }
+
     public Box(int sideX, int sideY, String name) {
         this.sideX = sideX;
         this.sideY = sideY;
@@ -32,7 +35,7 @@ public class Box {
     public void setSideX(int sideX) {
         this.sideX = sideX;
     }
-    
+
     public int getSideX() {
         return sideX;
     }
@@ -56,10 +59,10 @@ public class Box {
     public void setName(String name) {
         this.name = name;
     }
-    
+
     @Override
     public String toString() {
-        return "ID= " + this.id + " X =" + this.sideX + " Y =" + this.sideY ;
+        return "ID= " + this.id + " X =" + this.sideX + " Y =" + this.sideY;
     }
-    
+
 }
