@@ -36,7 +36,7 @@ public class CLPTask {
 
     public void modeluj() {
 
-        boxes = new Box().generateBoxes(5, 3, 3, "Box");
+        boxes = new BoxController().generateBoxes(5, 3, 3, "Box");
         int boxNum = boxes.size();
         vars = new IntVar[boxNum][4];
         originXIntVars = new IntVar[boxNum];
