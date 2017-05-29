@@ -50,6 +50,10 @@ public class Dorse {
         }
         return (lengthY - tmp);
     }
+    
+    public double getLoadingTime(){
+        return (this.getLengthX() * this.getLengthY()) / 10;
+    }
 
     public int getId() {
         return id;

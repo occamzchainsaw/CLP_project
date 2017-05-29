@@ -1,6 +1,7 @@
 package core;
 
 import java.util.ArrayList;
+import org.jacop.constraints.Cumulative;
 import org.jacop.core.IntVar;
 import org.jacop.core.Store;
 import org.jacop.search.DepthFirstSearch;
@@ -63,7 +64,8 @@ public class CLPTask {
         }
         store.impose(new Diff2(vars));
     }
-
+   
+        
     public void szukaj() {
         SelectChoicePoint<IntVar> select = new SimpleMatrixSelect(vars, new SmallestDomain<IntVar>(), new IndomainMin<IntVar>());
         search.labeling(store, select);
@@ -73,4 +75,5 @@ public class CLPTask {
         return store.toString();
     }
 
+    
 }

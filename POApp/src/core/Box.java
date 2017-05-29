@@ -31,6 +31,10 @@ public class Box {
         this.name = name;
         this.id = BoxController.LAST_ID++;
     }
+    
+    public double getWeight(){
+        return this.getSideX() * this.getSideY() * 5;
+    }
 
     public void setSideX(int sideX) {
         this.sideX = sideX;
