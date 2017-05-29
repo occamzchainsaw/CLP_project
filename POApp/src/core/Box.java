@@ -1,8 +1,4 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package core;
 
 /**
@@ -11,9 +7,24 @@ package core;
  */
 public class Box {
 
+    /**
+     * X side length of the box.
+     */
     private int sideX;
+    
+    /**
+     * Y side length of the box.
+     */
     private int sideY;
+    
+    /**
+     * ID of the box.
+     */
     private int id;
+    
+    /**
+     * Name of the box.
+     */
     private String name;
 
     public Box() {
@@ -32,6 +43,10 @@ public class Box {
         this.id = BoxController.LAST_ID++;
     }
     
+    /**
+     * Calculates the weight of box.
+     * @return Double value as a kilo gram of box.
+     */
     public double getWeight(){
         return this.getSideX() * this.getSideY() * 5;
     }

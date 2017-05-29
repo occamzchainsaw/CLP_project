@@ -8,9 +8,24 @@ import java.util.ArrayList;
  */
 public class Dorse {
 
+    /**
+     * ID of the dorse.
+     */
     private int id;
+    
+    /**
+     * Name of the dorse.
+     */
     private String name;
+    
+    /**
+     * X side length of the dorse.
+     */
     private int lengthX;
+    
+    /**
+     * Y side length of the dorse.
+     */
     private int lengthY;
 
     public Dorse() {
@@ -22,15 +37,28 @@ public class Dorse {
         this.lengthY = lengthY;
         this.id = DorseController.LAST_DORSE_ID++;
     }
-
+    
+    /**
+     * Minimum X coordinate of dorse for boxes that created.
+     * @return Calculated Integer value of X coordinate.
+     */
     public int getDorseMinX() {
         return 0;
     }
 
+    /**
+     * Minimum Y coordinate of dorse for boxes that created.
+     * @return Calculated Integer value of Y coordinate.
+     */
     public int getDorseMinY() {
         return 0;
     }
 
+    /**
+     * Maximum X coordinate of dorse for boxes that created.
+     * @param boxes ArrayList of boxes that created.
+     * @return Calculated Integer value of X coordinate.
+     */
     public int getDorseMaxX(ArrayList<Box> boxes) {
         int tmp = boxes.get(0).getSideX();
         for (Box next : boxes) {
@@ -41,6 +69,11 @@ public class Dorse {
         return (lengthX - tmp);
     }
 
+    /**
+     * Maximum Y coordinate of dorse for boxes that created.
+     * @param boxes ArrayList of boxes that created.
+     * @return Calculated Integer value of Y coordinate.
+     */
     public int getDorseMaxY(ArrayList<Box> boxes) {
         int tmp = boxes.get(0).getSideY();
         for (Box next : boxes) {
@@ -51,6 +84,10 @@ public class Dorse {
         return (lengthY - tmp);
     }
     
+    /**
+     * Calculates the loading time of dorse considering the size of dorse.
+     * @return Calculated Double value of loading time.
+     */
     public double getLoadingTime(){
         return (this.getLengthX() * this.getLengthY()) / 10;
     }

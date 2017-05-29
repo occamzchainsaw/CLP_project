@@ -54,14 +54,7 @@ public class CLPTask {
             lenYIntVars[i] = (new IntVar(store, "Length Y->" + i, boxController.getAllBoxes().get(i).getSideY(), boxController.getAllBoxes().get(i).getSideY()));
         }
 
-        int col = 0;
-        for (int i = 0; i < boxNum; i++) {
-            col = 0;
-            vars[i][col++] = originXIntVars[i];
-            vars[i][col++] = originYIntVars[i];
-            vars[i][col++] = lenXIntVars[i];
-            vars[i][col++] = lenYIntVars[i];
-        }
+        vars = boxController.putVariablesInMatrix(originXIntVars, originYIntVars, lenXIntVars, lenYIntVars, boxNum);
         store.impose(new Diff2(vars));
     }
    
