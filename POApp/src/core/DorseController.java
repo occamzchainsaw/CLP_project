@@ -17,7 +17,31 @@ public class DorseController {
      * ID of the last created dorse.
      */
     public static int LAST_DORSE_ID;
+    
+    /**
+     * ArrayList of Dorses created
+     */
+    private ArrayList<Dorse> allDorses;
 
+    public DorseController(ArrayList<Dorse> allDorses) {
+        this.allDorses = allDorses;
+    }
+    
+    /**
+     * 
+     * @param name
+     * @param lengthX
+     * @param lengthY
+     * @return 
+     */
+    public Dorse generateDorse(String name,int lengthX,int lengthY){
+        Dorse dorse = new Dorse(name, lengthX, lengthY);
+        allDorses.add(dorse);
+        return dorse;
+    }
+
+    
+    
     /**
      * Calculates the delivery time of dorse.
      * @param dorse Dorse object that is going deliver.
@@ -31,6 +55,11 @@ public class DorseController {
             sumWeigth += ((Box)boxes.get(i)).getWeight();
         }      
         return sumWeigth;
+    }
+
+
+    public ArrayList<Dorse> getAllDorses() {
+        return allDorses;
     }
     
 

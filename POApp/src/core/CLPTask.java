@@ -30,7 +30,7 @@ public class CLPTask {
     DorseController dorseController;
     protected IntVar[][] vars;
     protected IntVar[] originXIntVars, originYIntVars, lenXIntVars, lenYIntVars;
-
+    
     public void modeluj() {
 
         Dorse dorse = new Dorse("Dorse-1", 5, 10);
@@ -46,6 +46,8 @@ public class CLPTask {
         originYIntVars = new IntVar[boxNum];
         lenXIntVars = new IntVar[boxNum];
         lenYIntVars = new IntVar[boxNum];
+        
+        
 
         for (int i = 0; i < boxNum; i++) {
             originXIntVars[i] = (new IntVar(store, "Origin X->" + i, dorse.getDorseMinX(), dorse.getDorseMaxX(boxController.getAllBoxes())));
@@ -56,6 +58,8 @@ public class CLPTask {
 
         vars = boxController.putVariablesInMatrix(originXIntVars, originYIntVars, lenXIntVars, lenYIntVars, boxNum);
         store.impose(new Diff2(vars));
+        
+        
     }
    
         
