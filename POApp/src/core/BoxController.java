@@ -25,7 +25,8 @@ public class BoxController {
      * ArrayList of Boxes created
      */
     private ArrayList<Box> allBoxes;
-
+    public static ArrayList<BoxController> boxControllers = new ArrayList<>();
+    
     public BoxController() {
         this.allBoxes = new ArrayList<>();
     }

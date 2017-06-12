@@ -50,6 +50,9 @@ public class DorseController {
      */
     public double getDeliveryTime(BoxController controller){
         ArrayList<Box> boxes = controller.getAllBoxes();
+        if(boxes.isEmpty()){
+            return 0;
+        }
         double sumWeigth = 0;
         for (int i = 0; i < boxes.size(); i++) {
             sumWeigth += ((Box)boxes.get(i)).getWeight();

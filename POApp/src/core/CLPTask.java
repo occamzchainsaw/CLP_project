@@ -2,7 +2,6 @@ package core;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import org.jacop.constraints.Cumulative;
 import org.jacop.core.IntVar;
 import org.jacop.core.Store;
 import org.jacop.search.DepthFirstSearch;
@@ -28,8 +27,7 @@ public class CLPTask {
      */
     protected Store store = new Store();
     protected Search search = new DepthFirstSearch();
-    BoxController boxController;
-    ArrayList<BoxController> boxControllers;
+    protected BoxController boxController;
     DorseController dorseController = new DorseController();
     protected IntVar[][] vars;
     protected IntVar[] originXIntVars, originYIntVars, lenXIntVars, lenYIntVars;
@@ -37,11 +35,11 @@ public class CLPTask {
     
     public void modeluj() {
         
-        optim = new CLPTaskOptim();
-        optim.modeluj();
+        
+        
         Dorse dorse = new Dorse("Dorse-1", 5, 10);
         // Generating boxes
-        boxControllers = new ArrayList<>();
+        ArrayList<BoxController> boxControllers = BoxController.boxControllers;
         
         boxController = new BoxController();
         boxController.generateBoxes(4, 2, 2);
@@ -72,7 +70,8 @@ public class CLPTask {
 
             vars = boxController.putVariablesInMatrix(originXIntVars, originYIntVars, lenXIntVars, lenYIntVars, boxNum);
             store.impose(new Diff2(vars));
-            
+            optim = new CLPTaskOptim();
+            optim.modeluj();
     }
    
         
