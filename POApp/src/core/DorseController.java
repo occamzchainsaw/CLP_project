@@ -22,7 +22,7 @@ public class DorseController {
     /**
      * ArrayList of Dorses created
      */
-    private ArrayList<Dorse> allDorses = new ArrayList<>();
+    private static ArrayList<Dorse> allDorses = new ArrayList<>();
 
     public DorseController() {
     }

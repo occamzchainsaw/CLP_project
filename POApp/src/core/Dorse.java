@@ -89,7 +89,7 @@ public class Dorse {
      * @return Calculated Double value of loading time.
      */
     public double getLoadingTime(){
-        return (this.getLengthX() * this.getLengthY()) / 10;
+        return (this.getLengthX() * this.getLengthY());
     }
 
     public int getId() {
