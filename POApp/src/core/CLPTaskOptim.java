@@ -51,9 +51,9 @@ public class CLPTaskOptim extends CLPTask {
         IntVar index2 = new IntVar(store2, "index2", 1, 3);
         IntVar index3 = new IntVar(store2, "index3", 1, 3);
         
-        IntVar v1 = new IntVar(store2, "v1", 1, 10000);
-        IntVar v2 = new IntVar(store2, "v2", 1, 10000);
-        IntVar v3 = new IntVar(store2, "v3", 1, 10000);
+        IntVar v1 = new IntVar(store2, "v1", 1, 100);
+        IntVar v2 = new IntVar(store2, "v2", 1, 100);
+        IntVar v3 = new IntVar(store2, "v3", 1, 100);
         
         IntVar z1 = new IntVar(store2, "z1", 1, 10000);
         IntVar z2 = new IntVar(store2, "z2", 1, 10000);
@@ -63,6 +63,9 @@ public class CLPTaskOptim extends CLPTask {
             (int)dorseController.getAllDorses().get(1).getLoadingTime(),
             (int)dorseController.getAllDorses().get(2).getLoadingTime(),
         };
+        
+        System.out.println(loadTimes[1]);
+        
           int[] delTimes = {(int)dorseController.getAllDorses().get(0).getLoadingTime()+(int)dorseController.getDeliveryTime(BoxController.boxControllers.get(0)),
             (int)dorseController.getAllDorses().get(1).getLoadingTime()+(int)dorseController.getDeliveryTime(BoxController.boxControllers.get(1)),
             (int)dorseController.getAllDorses().get(2).getLoadingTime()+(int)dorseController.getDeliveryTime(BoxController.boxControllers.get(2)),
@@ -74,6 +77,8 @@ public class CLPTaskOptim extends CLPTask {
         store2.impose(elementCons2);
         Constraint elementCons3 = new Element(index3,loadTimes,v3);
         store2.impose(elementCons3);
+        
+        System.out.println(v1.value());
         
         Constraint elementCons4 = new Element(index1,delTimes,z1);
         store2.impose(elementCons4);
@@ -89,9 +94,11 @@ public class CLPTaskOptim extends CLPTask {
         Constraint allDifferent = new Alldifferent(indexes);
         store2.impose(allDifferent);
         
+        IntVar sum = new IntVar(store2, v1.value()+v2.value(), v1.value()+v2.value());
+        
         startingTime[0] = new IntVar(store2, 0, 0);
         startingTime[1] = v1;
-        startingTime[2] = new IntVar(store2, v1.min()+v2.min(), v1.max()+v2.max());
+        startingTime[2] = new IntVar(store2, v1.value()+v2.value(), v1.value()+v2.value());
         
         durationTimes[0]=z1;
         durationTimes[1]=z2;
@@ -110,6 +117,7 @@ public class CLPTaskOptim extends CLPTask {
         //Tmax = new Var();
         Tmax = new IntVar(store2,0,50000);
         store2.impose(new Max(completionTimes,Tmax));
+       
         
         /*
         for (int i = 0; i < dorseController.getAllDorses().size(); i++) {

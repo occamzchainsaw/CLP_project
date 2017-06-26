@@ -117,8 +117,8 @@ public class CLPTask {
         vars3 = boxController3.putVariablesInMatrix(originXIntVars, originYIntVars, lenXIntVars, lenYIntVars, boxNum);
         store.impose(new Diff2(vars3));
 */
-       // optim = new CLPTaskOptim();
-       // optim.modeluj();
+        optim = new CLPTaskOptim();
+        optim.modeluj();
     }
 
     public void szukaj() {
@@ -130,7 +130,7 @@ public class CLPTask {
       //  search.labeling(store, select3);
          
  //       search.printAllSolutions();
-//        optim.szukaj();
+       optim.szukaj();
 
     }
 
