@@ -59,16 +59,16 @@ public class CLPTaskOptim extends CLPTask {
         IntVar z2 = new IntVar(store2, "z2", 1, 10000);
         IntVar z3 = new IntVar(store2, "z3", 1, 10000);
         
-        int[] loadTimes = {(int)dorseController.getAllDorses().get(0).getLoadingTime(),
-            (int)dorseController.getAllDorses().get(1).getLoadingTime(),
-            (int)dorseController.getAllDorses().get(2).getLoadingTime(),
+        int[] loadTimes = {(int)dorseController.allDorses.get(0).getLoadingTime(),
+            (int)dorseController.allDorses.get(1).getLoadingTime(),
+            (int)dorseController.allDorses.get(2).getLoadingTime(),
         };
         
         System.out.println(loadTimes[1]);
         
-          int[] delTimes = {(int)dorseController.getAllDorses().get(0).getLoadingTime()+(int)dorseController.getDeliveryTime(BoxController.boxControllers.get(0)),
-            (int)dorseController.getAllDorses().get(1).getLoadingTime()+(int)dorseController.getDeliveryTime(BoxController.boxControllers.get(1)),
-            (int)dorseController.getAllDorses().get(2).getLoadingTime()+(int)dorseController.getDeliveryTime(BoxController.boxControllers.get(2)),
+          int[] delTimes = {(int)dorseController.allDorses.get(0).getLoadingTime()+(int)dorseController.getDeliveryTime(BoxController.boxControllers.get(0)),
+            (int)dorseController.allDorses.get(1).getLoadingTime()+(int)dorseController.getDeliveryTime(BoxController.boxControllers.get(1)),
+            (int)dorseController.allDorses.get(2).getLoadingTime()+(int)dorseController.getDeliveryTime(BoxController.boxControllers.get(2)),
         };
         
         Constraint elementCons1 = new Element(index1,loadTimes,v1);
@@ -107,7 +107,7 @@ public class CLPTaskOptim extends CLPTask {
         resources[0]=index1;
         resources[1]=index2;
         resources[2]=index3;
-        vars2 = dorseController.putVariablesInMatrix(startingTime, durationTimes, resources, dorseController.getAllDorses().size());
+        vars2 = dorseController.putVariablesInMatrix(startingTime, durationTimes, resources, dorseController.allDorses.size());
         store2.impose(new Cumulative(startingTime, durationTimes, resources, resourceLimit));
         
         for (int i = 0; i < 3; i++) {

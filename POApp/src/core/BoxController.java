@@ -6,9 +6,7 @@
 package core;
 
 import java.util.ArrayList;
-import org.jacop.constraints.Diff2;
 import org.jacop.core.IntVar;
-import org.jacop.core.Store;
 
 /**
  *
@@ -22,9 +20,13 @@ public class BoxController {
     public static int LAST_ID;
     
     /**
-     * ArrayList of Boxes created
+     * ArrayList of Boxes created.
      */
     private ArrayList<Box> allBoxes;
+    
+    /**
+     * The ArrayList of all Box Controllers.
+     */
     public static ArrayList<BoxController> boxControllers = new ArrayList<>();
     
     public BoxController() {
@@ -37,7 +39,6 @@ public class BoxController {
      * @param boxNum Number of boxes that wanted to create.
      * @param sideX Length of X dimension.
      * @param sideY Length of Y dimension.
-     * @return ArrayList of Boxes those created.
      */
     public void generateBoxes(int boxNum, int sideX, int sideY) {
 
@@ -55,7 +56,6 @@ public class BoxController {
      * @param sideX Length of X dimension.
      * @param sideY Length of Y dimension.
      * @param name Name of boxes to create.
-     * @return ArrayList of Boxes those created.
      */
     public void generateBoxes(int boxNum, int sideX, int sideY, String name) {
 
@@ -76,7 +76,7 @@ public class BoxController {
 
     /**
      * Gives the highest X value of boxes created.
-     * @return Int value of maximum X sides of boxes.
+     * @return Integer value of maximum X sides of boxes.
      */
     public int getBoxesMaxX() {
         int tmp = allBoxes.get(0).getSideX();

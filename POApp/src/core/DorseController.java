@@ -22,7 +22,7 @@ public class DorseController {
     /**
      * ArrayList of Dorses created
      */
-    private static ArrayList<Dorse> allDorses = new ArrayList<>();
+    public static ArrayList<Dorse> allDorses = new ArrayList<>();
 
     public DorseController() {
     }
@@ -60,11 +60,6 @@ public class DorseController {
         return sumWeigth;
     }
 
-
-    public ArrayList<Dorse> getAllDorses() {
-        return allDorses;
-    }
-    
 
     public IntVar[][] putVariablesInMatrix(IntVar[] firstColumn, IntVar[] secondColumn, IntVar[] thirdColumn, int rowNum){
         
