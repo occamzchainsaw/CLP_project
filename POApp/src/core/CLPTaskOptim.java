@@ -1,11 +1,11 @@
 package core;
 
 import java.util.ArrayList;
-import org.jacop.constraints.Alldifferent;
 import org.jacop.constraints.Constraint;
-import org.jacop.constraints.Cumulative;
-import org.jacop.constraints.Element;
+import org.jacop.constraints.Diff2;
 import org.jacop.constraints.Max;
+import org.jacop.constraints.SumInt;
+import org.jacop.constraints.XgtY;
 import org.jacop.core.Domain;
 import org.jacop.core.IntVar;
 import org.jacop.core.Store;
@@ -24,155 +24,98 @@ import org.jacop.search.SmallestDomain;
 public class CLPTaskOptim extends CLPTask {
 
     protected Store store2 = new Store();
-    protected IntVar[] startingTime, durationTimes, resources,completionTimes;
+    protected IntVar[] startingTime, durationTimes, resources,completionTimes,sumVar,time;
     Var[] searchVariables;
-    protected IntVar resourceLimit,Tmax;
-    protected IntVar[][] vars2;
+    protected IntVar resourceLimit,Tmax,timeLimit,index1,index2,index3,ltVar1,ltVar2,ltVar3;
+    protected IntVar[][] varsOptim;
     protected Search search2 = new DepthFirstSearch();
     ArrayList<Domain[]> doms = new ArrayList<>();
+    protected IntVar[] originXoptim, originYoptim, timeXoptim, truckYoptim;
     @Override
-    public void modeluj() {
-//        vars = new IntVar[10];
-//        for (int i = 0; i < 10; i++) {
-//            vars[i] = new IntVar(store, "var[" + i + "]", 1, 10);
-//        }
-//        store.impose(new Alldifferent(vars));
 
-        ArrayList<Integer> deliveryTimes = new ArrayList();
+    public void modeluj() {
+
         completionTimes = new IntVar[3];
         startingTime = new IntVar[3];
         durationTimes = new IntVar[3];
         resources = new IntVar[3];
         resourceLimit = new IntVar(store, 1, 3);
         searchVariables = new Var[7];
-        
-        
-        IntVar index1 = new IntVar(store2, "index1", 1, 3);
-        IntVar index2 = new IntVar(store2, "index2", 1, 3);
-        IntVar index3 = new IntVar(store2, "index3", 1, 3);
-        
-        IntVar v1 = new IntVar(store2, "v1", 1, 100);
-        IntVar v2 = new IntVar(store2, "v2", 1, 100);
-        IntVar v3 = new IntVar(store2, "v3", 1, 100);
-        
-        IntVar z1 = new IntVar(store2, "z1", 1, 10000);
-        IntVar z2 = new IntVar(store2, "z2", 1, 10000);
-        IntVar z3 = new IntVar(store2, "z3", 1, 10000);
-        
-        int[] loadTimes = {(int)dorseController.allDorses.get(0).getLoadingTime(),
-            (int)dorseController.allDorses.get(1).getLoadingTime(),
-            (int)dorseController.allDorses.get(2).getLoadingTime(),
+        originXoptim=new IntVar[3];
+        originYoptim=new IntVar[3];
+        timeXoptim=new IntVar[3];
+        truckYoptim=new IntVar[3];
+          
+        int[] loadTimes = {(int)DorseController.allDorses.get(0).getLoadingTime(),
+            (int)DorseController.allDorses.get(1).getLoadingTime(),
+            (int)DorseController.allDorses.get(2).getLoadingTime(),
         };
-        
-        System.out.println(loadTimes[1]);
-        
-          int[] delTimes = {(int)dorseController.allDorses.get(0).getLoadingTime()+(int)dorseController.getDeliveryTime(BoxController.boxControllers.get(0)),
-            (int)dorseController.allDorses.get(1).getLoadingTime()+(int)dorseController.getDeliveryTime(BoxController.boxControllers.get(1)),
-            (int)dorseController.allDorses.get(2).getLoadingTime()+(int)dorseController.getDeliveryTime(BoxController.boxControllers.get(2)),
+       
+          int[] delTimes = {(int)DorseController.allDorses.get(0).getLoadingTime()+(int)dorseController.getDeliveryTime(BoxController.boxControllers.get(0)),
+            (int)DorseController.allDorses.get(1).getLoadingTime()+(int)dorseController.getDeliveryTime(BoxController.boxControllers.get(1)),
+            (int)DorseController.allDorses.get(2).getLoadingTime()+(int)dorseController.getDeliveryTime(BoxController.boxControllers.get(2)),
         };
-        
-        Constraint elementCons1 = new Element(index1,loadTimes,v1);
-        store2.impose(elementCons1);
-        Constraint elementCons2 = new Element(index2,loadTimes,v2);
-        store2.impose(elementCons2);
-        Constraint elementCons3 = new Element(index3,loadTimes,v3);
-        store2.impose(elementCons3);
-        
-        System.out.println(v1.value());
-        
-        Constraint elementCons4 = new Element(index1,delTimes,z1);
-        store2.impose(elementCons4);
-        Constraint elementCons5 = new Element(index2,delTimes,z2);
-        store2.impose(elementCons5);
-        Constraint elementCons6 = new Element(index3,delTimes,z3);
-        store2.impose(elementCons6);
-        
-        ArrayList<IntVar> indexes = new ArrayList<>();
-        indexes.add(index1);
-        indexes.add(index2);
-        indexes.add(index3);
-        Constraint allDifferent = new Alldifferent(indexes);
-        store2.impose(allDifferent);
-        
-        IntVar sum = new IntVar(store2, v1.value()+v2.value(), v1.value()+v2.value());
-        
-        startingTime[0] = new IntVar(store2, 0, 0);
-        startingTime[1] = v1;
-        startingTime[2] = new IntVar(store2, v1.value()+v2.value(), v1.value()+v2.value());
-        
-        durationTimes[0]=z1;
-        durationTimes[1]=z2;
-        durationTimes[2]=z3;
-
-        resources[0]=index1;
-        resources[1]=index2;
-        resources[2]=index3;
-        vars2 = dorseController.putVariablesInMatrix(startingTime, durationTimes, resources, dorseController.allDorses.size());
-        store2.impose(new Cumulative(startingTime, durationTimes, resources, resourceLimit));
-        
+          
+        //////////PREPARATION ON DIFF2 ARGUMENTS
         for (int i = 0; i < 3; i++) {
-             completionTimes[i]= new IntVar(store2, startingTime[i].min()+durationTimes[i].min(), startingTime[i].max()+durationTimes[i].max());
-             //System.out.println("comp time " + i + completionTimes[i]);
+            
+            originXoptim[i] = (new IntVar(store2, "Starting time->" + i,0,loadTimes[0]+loadTimes[1]+loadTimes[2] ));
+            originYoptim[i] = (new IntVar(store2, "Truck->" + i,0,2 ));
+            timeXoptim[i] = (new IntVar(store2, "Total time->" + i,loadTimes[i]+delTimes[i],loadTimes[i]+delTimes[i] ));
+            truckYoptim[i] = (new IntVar(store2, "Lenght Y->" + i,1,1 ));   
         }
-        //Tmax = new Var();
+        //////////////////////SUMMING STARTTIME+LOADTIME////////////
+        ltVar1=new IntVar(store2,"originXoptim + loadTimes",loadTimes[0],loadTimes[0]);
+        IntVar sum1 = new IntVar(store2, "sum1",1, 500);
+        IntVar[] sumVar1 = {ltVar1,originXoptim[0]};
+        Constraint sumIntCtr1 = new SumInt(store2,sumVar1, "==", sum1); 
+        store2.impose(sumIntCtr1);
+        
+        ltVar2=new IntVar(store2,"originXoptim + loadTimes",loadTimes[1],loadTimes[1]);
+        IntVar sum2 = new IntVar(store2, "sum2",1, 500);
+        IntVar[] sumVar2 = {ltVar2,originXoptim[1]};
+        Constraint sumIntCtr2 = new SumInt(store2,sumVar2, "==", sum2); 
+        store2.impose(sumIntCtr2);
+        
+        ltVar3=new IntVar(store2,"originXoptim + loadTimes",loadTimes[2],loadTimes[2]);
+        IntVar sum3 = new IntVar(store2, "sum3",1, 500);
+        IntVar[] sumVar3 = {ltVar3,originXoptim[2]};
+        Constraint sumIntCtr3 = new SumInt(store2,sumVar3, "==", sum3); 
+        store2.impose(sumIntCtr3);
+        ///////////////////////////////////////      
+        store2.impose(new XgtY(originXoptim[2],sum2) );
+        store2.impose(new XgtY(originXoptim[1],sum1) );
+        
+        ///////////////GETTING COMPLETION TIME FOR MINIMIZATION/////////////////
+        IntVar sum4 = new IntVar(store2, "sum4",1, 2000);
+        IntVar sum5 = new IntVar(store2, "sum5",1, 2000);
+        IntVar sum6 = new IntVar(store2, "sum6",1, 2000);
+        IntVar[] getSumTime1 = {originXoptim[0],timeXoptim[0]};
+        IntVar[] getSumTime2 = {originXoptim[1],timeXoptim[1]};
+        IntVar[] getSumTime3 = {originXoptim[2],timeXoptim[2]};
+        Constraint sumIntCtr4 = new SumInt(store2,getSumTime1, "==", sum4); 
+        Constraint sumIntCtr5 = new SumInt(store2,getSumTime2, "==", sum5); 
+        Constraint sumIntCtr6 = new SumInt(store2,getSumTime3, "==", sum6); 
+        store2.impose(sumIntCtr4);
+        store2.impose(sumIntCtr5);
+        store2.impose(sumIntCtr6);
+        completionTimes[0]=sum4;
+        completionTimes[1]=sum5;
+        completionTimes[2]=sum6;
         Tmax = new IntVar(store2,0,50000);
         store2.impose(new Max(completionTimes,Tmax));
-       
+        //////////////////////////////////////////
         
-        /*
-        for (int i = 0; i < dorseController.getAllDorses().size(); i++) {
-            deliveryTimes.add((int)dorseController.getDeliveryTime(BoxController.boxControllers.get(i)));
-        }
-        int loadingTime = 0; 
-        int packTime = 0;  
-        for (int i = 0; i < startingTime.length; i++) {             
-            startingTime[i] = new IntVar(store2, loadingTime, loadingTime );      
-            loadingTime += (int) dorseController.getAllDorses().get(i).getLoadingTime();
-            
-            durationTimes[i] = new IntVar(store2, deliveryTimes.get(i) + loadingTime, deliveryTimes.get(i) + loadingTime);
-           // packTime += deliveryTimes.get(i);
-            resources[i] = new IntVar(store2, 1, 1);
-        }     
-        vars2 = dorseController.putVariablesInMatrix(startingTime, durationTimes, resources, dorseController.getAllDorses().size());
-        store2.impose(new Cumulative(startingTime, durationTimes, resources, resourceLimit));
         
-        */
-        /*
-        int[][] comb = new int[][]{{0, 1, 2},
-        {0, 2, 1},
-        {1, 0, 2},
-        {1, 2, 0},
-        {2, 0, 1},
-        {2, 1, 0}};
-
-        for (int i = 0; i < dorseController.getAllDorses().size(); i++) {
-               deliveryTimes.add((int) dorseController.getDeliveryTime(BoxController.boxControllers.get(i)));
-        }
-        for (int j = 0; j < 6; j++) {
-
-            int loadingTime = 0;
-            int packTime = 0;
-            for (int i = 0; i < startingTime.length; i++) {
-                startingTime[i] = new IntVar(store2, loadingTime, loadingTime);
-                loadingTime += (int) dorseController.getAllDorses().get(comb[j][i] ).getLoadingTime()*100;
-
-                durationTimes[i] = new IntVar(store2, deliveryTimes.get(comb[j][i]) + loadingTime, deliveryTimes.get(comb[j][i]) + loadingTime);
-                resources[i] = new IntVar(store2, 1, 1);
-            }
-
-            vars2 = dorseController.putVariablesInMatrix(startingTime, durationTimes, resources, dorseController.getAllDorses().size());
-            store2.impose(new Cumulative(startingTime, durationTimes, resources, resourceLimit));
-            
-            szukaj();
-        }
-       */
+        varsOptim =new IntVar[][]{{originXoptim[0],originXoptim[1],originXoptim[2]}, {originYoptim[0],originYoptim[1],originYoptim[2]}, {timeXoptim[0],timeXoptim[1],timeXoptim[2]}, {truckYoptim[0],truckYoptim[1],truckYoptim[2]}};
+        store2.impose(new Diff2(originXoptim, originYoptim, timeXoptim, truckYoptim));
     }
 
     @Override
     public void szukaj() {
-        SelectChoicePoint<IntVar> select = new SimpleMatrixSelect(vars2, new SmallestDomain<IntVar>(), new IndomainMin<IntVar>());
-        search2.labeling(store2, select,Tmax);
-        search2.printAllSolutions();
+        SelectChoicePoint<IntVar> select = new SimpleMatrixSelect(varsOptim, new SmallestDomain<IntVar>(), new IndomainMin<IntVar>());
+        search2.labeling(store2, select, Tmax);
+        //search2.printAllSolutions();
     }
 
     @Override
