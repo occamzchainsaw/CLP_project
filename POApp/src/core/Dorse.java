@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 /**
  *
- * @author zahid
+ * @author M.Zahid KIZMAZ, Kajetan Poraj, Paweł Achtelik
  */
 public class Dorse {
 

@@ -14,7 +14,7 @@ import org.jacop.search.SimpleSelect;
 
 /**
  *
- * @author SzOg
+ * @author M.Zahid KIZMAZ, Kajetan Poraj, Paweł Achtelik
  */
 public class CLPTask {
 

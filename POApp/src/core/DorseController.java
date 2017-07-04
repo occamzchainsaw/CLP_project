@@ -1,8 +1,4 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package core;
 
 import java.util.ArrayList;
@@ -10,7 +6,7 @@ import org.jacop.core.IntVar;
 
 /**
  *
- * @author zahid
+ * @author M.Zahid KIZMAZ, Kajetan Poraj, Paweł Achtelik
  */
 public class DorseController {
 
@@ -61,6 +57,14 @@ public class DorseController {
     }
 
 
+    /**
+     * Creates a matrix with given variables.
+     * @param firstColumn First column as IntVar array of a matrix that will be created.
+     * @param secondColumn Second column as IntVar array of a matrix that will be created.
+     * @param thirdColumn Third column as IntVar array of a matrix that will be created.
+     * @param rowNum Row number of matrix that will be created.
+     * @return Created matrix with given elements typed IntVar[][].
+     */
     public IntVar[][] putVariablesInMatrix(IntVar[] firstColumn, IntVar[] secondColumn, IntVar[] thirdColumn, int rowNum){
         
         int col;

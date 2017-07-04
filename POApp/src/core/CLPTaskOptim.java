@@ -23,7 +23,7 @@ import org.jacop.search.SmallestDomain;
 
 /**
  *
- * @author SzOg
+ * @author M.Zahid KIZMAZ, Kajetan Poraj, Paweł Achtelik
  */
 public class CLPTaskOptim extends CLPTask {
 
